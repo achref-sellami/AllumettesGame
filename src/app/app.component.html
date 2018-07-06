@@ -1,31 +1,57 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <br>
   <h1>
     Bienvenu au jeu des allumettes
   </h1>
-  <br><br>
-  <div class="row">
+  <br>
+  <div class="row" style="width: 99%">
+    <div class="col-md-3">
+      <!--Show/hide "STOP" and "GO" images -->
+      <img *ngIf="playerOneDisable" style="text-align:left" src="assets/go.png" alt="player.jpg">
+      <img *ngIf="playerTwoDisable" style="text-align:right" src="assets/stop.png" alt="player.jpg">
+    </div>
+    <div class="col-md-6">
+      <!--Show player one win -->
+      <h2 style="color: red" *ngIf="playerOneWin">
+        Félicitation !!!!  
+        Le joueur 1 gagne la partie.
+      </h2>
+      <!--Show player two win -->
+      <h2 style="color: blue"  *ngIf="playerTwoWin">
+        Félicitation !!!!  
+        Le joueur 2 gagne la partie.
+      </h2>
+    </div>
+    <div class="col-md-3">
+      <!--Show/hide "STOP" and "GO" images -->
+      <img *ngIf="!playerOneDisable" style="text-align:left" src="assets/go.png" alt="player.jpg">
+      <img *ngIf="!playerTwoDisable" style="text-align:right" src="assets/stop.png" alt="player.jpg">
+    </div>
+  </div>
+  <div class="row" style="width: 99%">
     <div class="col-md-3">
       <img style="text-align:left" src="assets/player.jpg" alt="player.jpg">
-      <span>Joueur 1</span><br>
+      <span style="color: red;"> {{playerOneName}} </span><br>
       Combien prenez-vous d'allumettes ?<br>
-      <input type="button" *ngFor="let i of allumette;" value="{{i}}" />
+      <input type="button" *ngFor="let i of allumette;" value="{{i}}" [disabled]="!playerOneDisable || (playerTwoWin || playerOneWin)" (click)="playerOnePlay(i)"/>
     </div>
     <div class="col-md-6">
       <h4>
-        Celui qui prend la dernière allumette gagne la partie !<br><br><br>
+        Celui qui prend la dernière allumette gagnera la partie !
       </h4>
-      <h5>Nombre des allumettes: {{allumettesNumber}} </h5>
+      <br>
+      <h4 *ngIf="allumettesNumber > 0" [ngStyle]="{'color':playerName === playerOneName ? 'red' : 'blue' }">Le {{playerName}} joue</h4>
+      <br>
+      <h6>Nombre des allumettes: {{allumettesNumber}} </h6>
+      <input *ngIf="allumettesNumber === 0" type="button" (click)="refresh()" value="Commencer une nouvelle partie">
       <div>
         <img src="assets/allumette.png" alt="player.jpg" *ngFor="let i of allumettesItems;"/>
       </div> 
     </div>
     <div class="col-md-3">
       <img style="text-align:right" src="assets/player.jpg" alt="player.jpg">
-      <span>Joueur 2</span><br>
+      <span style="color: blue;"> {{playerTwoName}} </span><br>
       Combien prenez-vous d'allumettes ?<br>
-      <input type="button" *ngFor="let i of allumette;" value="{{i}}" />
+      <input type="button" *ngFor="let i of allumette;" value="{{i}}" [disabled]="!playerTwoDisable || (playerTwoWin || playerOneWin)"  (click)="playerTwoPlay(i)"/>
     </div>
   </div>  
 </div>
